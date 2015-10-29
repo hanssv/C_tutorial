@@ -71,7 +71,7 @@ key(S) ->
 prop_tree() ->
   ?SETUP(fun() ->
              compile(),
-             fun() -> cleanup()  %% must stop eqc_c in order to not get error "tree.gcda:stamp mismatch with notes file"
+             fun() -> cleanup() 
              end
          end,
   ?FORALL(Cmds, commands(?MODULE),
@@ -85,14 +85,8 @@ prop_tree() ->
 
 
 compile() ->
-  eqc_c_cover_start(tree).
-
-eqc_c_cover_start(File) ->
-  eqc_c:start(File, [definitions_only, {cflags, "-coverage"}]).
+  eqc_c:start(tree, [definitions_only, {cflags, "-coverage"}]).
 
 cleanup() ->
-  io:format("~p\n",[eqc_c_cover_stop()]).
-
-eqc_c_cover_stop() ->
   eqc_c:stop().
 
