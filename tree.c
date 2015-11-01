@@ -3,16 +3,16 @@
 // string comparison
 
 int compare(char *s1, char *s2)
-{ while (1)
+{ while(1)
     {
-      if (s1[1]<s2[1]) return -1;
-      if (s1[1]>s2[1]) return 1;
-      if (s1[1]==0) return 0;
       s1++; s2++;
+      if (*s1 < *s2) return -1;
+      if (*s1 > *s2) return 1;
+      if (*s1 == 0)  return 0;
     }
 }
 
-typedef struct node 
+typedef struct node
 { struct node *left, *right;
   char *key;
   int value;
@@ -20,10 +20,10 @@ typedef struct node
 
 node *mknode(char *key, int val, node *left, node *right)
 { node *t = malloc(sizeof(node));
-  t -> key = key; //!!
-  t -> value = val;
-  t -> left = left;
-  t -> right = right;
+  t->key   = key; //!!
+  t->value = val;
+  t->left  = left;
+  t->right = right;
 }
 
 node *root = NULL;
@@ -31,22 +31,23 @@ node *root = NULL;
 void init(void)
 { root = NULL; }
 
-void insert(char*key,int val)
+void insert(char*key, int val)
 {
   node **t = &root;
   while (1) {
-    if(*t==NULL) {
-      *t = mknode(key,val,NULL,NULL);
+    if(*t == NULL) {
+      *t = mknode(key, val, NULL, NULL);
       return;
     }
-    switch(compare(key,(*t)->key)) {
-    case 1: 
+    switch(compare(key, (*t)->key)) {
+    case 1:
       t = &(**t).right;
       break;
     case -1:
       t = &(**t).left;
       break;
     case 0:
+      (*t)->value = val;
       return;
     }
   }
@@ -55,8 +56,8 @@ void insert(char*key,int val)
 int lookup(char*key)
 { node *t = root;
   while(1)
-    { if (t==NULL) return -1;
-      int c = compare(key,t->key);
+    { if (t == NULL) return -1;
+      int c = compare(key, t->key);
       switch (c)
         { case 1:  t=t->right; break;
           case -1: t=t->left; break;
@@ -65,12 +66,12 @@ int lookup(char*key)
     }
 }
 
-void update(char*key,int val)
+void update(char*key, int val)
 {
   node **t = &root;
   while (1) {
-    switch(compare(key,(*t)->key)) {
-    case 1: 
+    switch(compare(key, (*t)->key)) {
+    case 1:
       t = &(**t).right;
       break;
     case -1:
@@ -86,7 +87,7 @@ void update(char*key,int val)
 void delete(char*key) {
   node **t = &root;
   while(1) {
-    switch(compare(key,(*t)->key)) {
+    switch(compare(key, (*t)->key)) {
     case 1:
       t = &(**t).right;
       break;
@@ -94,17 +95,17 @@ void delete(char*key) {
       t = &(**t).left;
       break;
     case 0:
-      if ((*t)->left==NULL) {
+      if ((*t)->left == NULL) {
         *t = (*t)->right;
         return;
       }
-      if ((*t)->right==NULL) {
+      if ((*t)->right == NULL) {
         *t = (*t)->left;
         return;
       }
       node **t1=&(*t)->right;
       while(1) {
-        if((*t1)->right==NULL) {
+        if((*t1)->right == NULL) {
           (*t)->key = (*t1)->key;
           (*t)->value = (*t1)->value;
           *t1 = (*t1)->left;
