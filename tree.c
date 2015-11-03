@@ -102,7 +102,7 @@ void delete(char*key) {
         *t = (*t)->left;
         return;
       }
-      node **t1=&(*t)->right;
+      node **t1=&(*t)->left;
       while(1) {
         if((*t1)->right == NULL) {
           (*t)->key = (*t1)->key;
