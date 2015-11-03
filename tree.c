@@ -47,7 +47,6 @@ void insert(char*key, int val)
       t = &(**t).left;
       break;
     case 0:
-      (*t)->value = val;
       return;
     }
   }
